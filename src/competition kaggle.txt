@@ -1,0 +1,92 @@
+MÁS ESPECÍFICAMENTE
+El conjunto de datos de cada concurso se divide en dos conjuntos de datos más pequeños.
+Uno de estos conjuntos de datos más pequeños se entregará a los participantes para entrenar sus modelos, normalmente
+llamado `train.csv`.
+El otro conjunto de datos se ocultará en su mayor parte a los participantes y será utilizado por Kaggle para las pruebas
+y puntuación, denominados `test.csv` y `solution.csv` (`test.csv` es lo mismo que
+solución.csv), con la diferencia de que `test.csv` contiene los valores de las características y `solución.csv`.
+contiene la(s) variable(s) de la verdad básica; los participantes nunca verán el archivo `solution.csv`).
+
+3) Cuando un participante se sienta preparado para presentar una propuesta al concurso, utilizará
+para generar una predicción y subir un archivo CSV. Kaggle puntuará automáticamente
+automáticamente la precisión de la presentación utilizando el archivo oculto `solution.csv`.
+
+Figura: El conjunto de datos de cada competición se divide en dos conjuntos de datos más pequeños.
+
+La mayoría de los concursos tienen un número máximo de envíos que un participante puede hacer
+cada día y un plazo final en el que se congelará la tabla de clasificación y se publicarán los ganadores.
+y se publican los ganadores.
+Es posible que un participante pueda utilizar la mecánica de un concurso de Kaggle para
+para sobreajustar una solución, lo que sería estupendo para ganar un concurso, pero no valdría para una
+para una aplicación en el mundo real.
+Para evitar esto, Kaggle tiene dos tablas de clasificación: la pública y la privada.
+El anfitrión del concurso divide el conjunto de datos `solution.csv` en dos partes, utilizando una parte para
+una parte para la tabla de clasificación pública y otra parte para la tabla de clasificación privada. Participantes
+
+4) generalmente no sabrán qué muestras son públicas o privadas. La tabla de clasificación privada se
+secreto hasta después de la fecha límite del concurso y se utiliza como tabla de clasificación oficial
+para determinar la clasificación final.
+
+
+
+Se entregará a los participantes el archivo `Train.csv` para que entrenen sus modelos. Incluye las entradas y la
+verdad del terreno. Por ejemplo, en el concurso de tiendas de comestibles, "train.csv" contiene columnas
+de datos del producto y las columnas de la solución: si el producto se vendió o no. Por lo general, esto
+es aproximadamente el 70% del conjunto de datos original.
+Kaggle utiliza `Test.csv` y `Solution.csv` para evaluar los modelos de los participantes.
+Test.csv se entrega a los participantes para que puedan crear un archivo de presentación, mientras que `Solution.csv`
+siempre se oculta a los participantes y es utilizado por la plataforma de Kaggle para puntuar los envíos.
+Normalmente se trata de un 30% del conjunto de datos original.
+El archivo `Sample_submission.csv` es un archivo CSV de reserva con el formato correcto, que
+ayuda a los participantes a entender el formato de presentación esperado para el concurso.
+Usted decide cómo quiere dividir su conjunto de datos en archivos de entrenamiento y de prueba.
+pero, por lo general, la mejor práctica es asegurarse de que tanto los datos de entrenamiento como los de prueba tengan el mismo tipo de datos representados.
+datos representados. Además, la mayoría de la gente opta por una división de 70/30 o 75/25 entre entrenamiento y prueba, pero esto depende del problema y del conjunto de datos.
+depende del problema y del conjunto de datos.
+Nota: esta guía proporciona instrucciones para datos tabulares. Otros tipos de problemas, como los datos de imágenes
+son posibles utilizando pasos similares.
+
+
+IMPLEMENTAR UNA COLUMNA DE ID ÚNICA
+Antes de dividir el conjunto de datos, asegúrese de que su conjunto de datos tiene una columna Id. única. La columna
+La columna Id es la forma en que el sistema de puntuación sabe qué filas de un envío corresponden a
+a qué filas de la solución.
+
+PREPARAR EL ARCHIVO TRAIN.CSV
+Tome un trozo grande de su conjunto de datos, normalmente el 70%, y divídalo en su propio conjunto de datos llamado
+`train.csv`. Asegúrese de no eliminar la(s) columna(s) de la verdad básica porque los participantes necesitan
+esa información para entrenar sus modelos. Guárdalo y resérvalo para cargarlo más tarde.
+
+PREPARE LOS ARCHIVOS TEST.CSV Y SOLUTION.CSV
+Tome el 10-30% restante de su conjunto de datos y duplíquelo para crear dos archivos idénticos.
+A continuación, tome un archivo, elimine la(s) columna(s) de la solución y titúlelo `test.csv`. Guárdelo y póngalo
+y guárdelo para cargarlo más tarde. A continuación se muestra un ejemplo del concurso Titanic (fíjese en que la columna
+columna "# ventas" se elimina).
+
+A continuación, tome el otro archivo y elimine todas las columnas, excepto la columna del identificador único y la(s) columna(s) de la solución.
+columna(s) de la solución. Ponle el título "solution.csv". Guárdelo y póngalo a un lado para cargarlo más tarde.
+A continuación se muestra un ejemplo del concurso Titanic. La segunda columna, titulada "sobrevivido", es el
+objetivo que los participantes deben predecir.
+
+AÑADIR UNA COLUMNA DE USO A LOS ARCHIVOS SOLUTION.CSV (OPCIONAL)
+Como se ha dicho anteriormente, cada competición de Kaggle tiene una tabla de clasificación pública y privada. Usted puede
+Opcionalmente, puede elegir dividir manualmente sus datos en estas dos tablas de clasificación, añadiendo una columna de "Uso" a sus datos.
+columna "Uso" a su conjunto de datos.
+Si eliges añadir una columna "Uso", ésta debe tener uno de los tres valores siguientes Público, Privado o
+Ignorado. De nuevo, esto es completamente opcional. Si no proporciona una columna de Uso, las filas se muestrearán automáticamente en estos cubos.
+automáticamente en estos cubos.
+Para el contexto, las filas públicas se utilizan para crear la tabla de clasificación pública en vivo, mientras la
+mientras se desarrolla el concurso. Cuando un participante hace un envío, recibirá una puntuación
+en función de la precisión de sus predicciones en estas filas. Las filas públicas deben dar
+participantes una muestra representativa del rendimiento de su modelo para su iteración y
+mejora. Para quienes estén familiarizados con el aprendizaje automático, esto es similar a un "conjunto de validación".
+Sin embargo, es la puntuación de una presentación en las filas privadas la que se utiliza para determinar la
+final. Esta "tabla de clasificación privada" sólo la puede ver el organizador del concurso hasta el
+hasta la fecha límite del concurso, momento en el que se publica para los participantes.
+
+PREPARAR EL ARCHIVO SAMPLE_SUBMISSION.CSV
+Duplique el archivo `solution.csv` y elimine todos los valores específicos de la verdad sobre el terreno
+sustituyéndolos por marcadores de posición que tengan el rango/tipo de valores correcto. Además
+elimine la columna "Uso" (si procede). Este archivo se entregará a los usuarios como ejemplo de
+cómo formatear los envíos para su evaluación. Guárdelo y guárdelo para cargarlo más tarde.
+
